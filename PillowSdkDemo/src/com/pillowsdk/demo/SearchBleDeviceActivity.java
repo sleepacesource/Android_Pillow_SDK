@@ -2,10 +2,10 @@ package com.pillowsdk.demo;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.pillowsdk.demo.R;
+
 import com.pillowsdk.demo.util.BleDeviceNameUtil;
 import com.sleepace.sdk.domain.BleDevice;
-import com.sleepace.sdk.manager.BleHelper;
+import com.sleepace.sdk.manager.ble.BleHelper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

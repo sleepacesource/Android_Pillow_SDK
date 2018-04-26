@@ -29,7 +29,7 @@ import com.pillowsdk.demo.util.DensityUtil;
 import com.pillowsdk.demo.view.graphview.compatible.ScaleGestureDetector;
 import com.pillowsdk.demo.view.graphview.interfs.CustomLabelFormatter;
 import com.pillowsdk.demo.view.graphview.interfs.GraphViewDataInterface;
-import com.sleepace.sdk.util.TimeUtill;
+import com.sleepace.sdk.util.TimeUtil;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -1062,7 +1062,7 @@ abstract public class GraphView extends LinearLayout {
 						int tempTime = (int) Double.parseDouble(strT);
 						// int [] times=TimeUtill.int2HMInt(beginTimes+tempTime
 						// , timezone);
-						strT = TimeUtill.int2TimeHM(beginTimes + tempTime, timezone, dst_off);
+						strT = TimeUtil.int2TimeHM(beginTimes + tempTime, timezone, dst_off);
 						/*
 						 * if(times.length==2) strT=times[0]+":"+times[1];
 						 */

@@ -7,8 +7,8 @@ import com.pillowsdk.demo.MainActivity;
 import com.pillowsdk.demo.R;
 import com.sleepace.sdk.core.heartbreath.domain.BatteryBean;
 import com.sleepace.sdk.interfs.IConnectionStateCallback;
-import com.sleepace.sdk.interfs.IDataCallback;
 import com.sleepace.sdk.interfs.IDeviceManager;
+import com.sleepace.sdk.interfs.IResultCallback;
 import com.sleepace.sdk.manager.CONNECTION_STATE;
 import com.sleepace.sdk.manager.CallbackData;
 import com.sleepace.sdk.manager.DeviceMaterial;
@@ -155,9 +155,9 @@ public class DeviceFragment extends BaseFragment {
 			mActivity.showUpgradeDialog();
 			upgrading = true;
 //			InputStream is = getResources().getAssets().open("Z2_V1.11.des");
-			getPillowHelper().upgradeDevice(bean.crcDes, bean.crcBin, bean.is, new IDataCallback() {
+			getPillowHelper().upgradeDevice(bean.crcDes, bean.crcBin, bean.is, new IResultCallback() {
 				@Override
-				public void onDataCallback(final CallbackData cd) {
+				public void onResultCallback(final CallbackData cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
@@ -194,9 +194,9 @@ public class DeviceFragment extends BaseFragment {
 			printLog(getString(R.string.get_device_id, mActivity.getDevice().getDeviceId()));
 		}else if(v == btnPower){
 			printLog(R.string.getting_power);
-			getPillowHelper().getBattery(1000, new IDataCallback<BatteryBean>() {
+			getPillowHelper().getBattery(1000, new IResultCallback<BatteryBean>() {
 				@Override
-				public void onDataCallback(final CallbackData<BatteryBean> cd) {
+				public void onResultCallback(final CallbackData<BatteryBean> cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
@@ -214,9 +214,9 @@ public class DeviceFragment extends BaseFragment {
 			});
 		}else if(v == btnVersion){
 			printLog(R.string.getting_current_version);
-			getPillowHelper().getDeviceVersion(1000, new IDataCallback<String>() {
+			getPillowHelper().getDeviceVersion(1000, new IResultCallback<String>() {
 				@Override
-				public void onDataCallback(final CallbackData<String> cd) {
+				public void onResultCallback(final CallbackData<String> cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override

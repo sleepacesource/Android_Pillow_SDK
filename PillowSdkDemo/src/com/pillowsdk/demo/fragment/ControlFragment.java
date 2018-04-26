@@ -4,16 +4,16 @@ import com.pillowsdk.demo.AutoStartActivity;
 import com.pillowsdk.demo.MainActivity;
 import com.pillowsdk.demo.R;
 import com.pillowsdk.demo.RawDataActivity;
+import com.sleepace.sdk.constant.StatusCode;
 import com.sleepace.sdk.core.heartbreath.domain.RealTimeData;
 import com.sleepace.sdk.core.heartbreath.util.SleepStatusType;
 import com.sleepace.sdk.interfs.IConnectionStateCallback;
-import com.sleepace.sdk.interfs.IDataCallback;
 import com.sleepace.sdk.interfs.IDeviceManager;
 import com.sleepace.sdk.interfs.IMonitorManager;
+import com.sleepace.sdk.interfs.IResultCallback;
 import com.sleepace.sdk.manager.CONNECTION_STATE;
 import com.sleepace.sdk.manager.CallbackData;
 import com.sleepace.sdk.util.LogUtil;
-import com.sleepace.sdk.util.StatusCode;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -160,9 +160,9 @@ public class ControlFragment extends BaseFragment {
 			getPillowHelper().startRealTimeData(1000, realtimeCB);
 		}else if(v == btnStopRealtimeData){
 			printLog(R.string.stopping_data);
-			getPillowHelper().stopRealTimeData(1000, new IDataCallback<Void>() {
+			getPillowHelper().stopRealTimeData(1000, new IResultCallback<Void>() {
 				@Override
-				public void onDataCallback(final CallbackData<Void> cd) {
+				public void onResultCallback(final CallbackData<Void> cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
@@ -181,9 +181,9 @@ public class ControlFragment extends BaseFragment {
 			});
 		}else if(v == btnStopCollect){
 			printLog(R.string.notified_acquisition_off);
-			getPillowHelper().stopCollection(1000, new IDataCallback<Void>() {
+			getPillowHelper().stopCollection(1000, new IResultCallback<Void>() {
 				@Override
-				public void onDataCallback(final CallbackData<Void> cd) {
+				public void onResultCallback(final CallbackData<Void> cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
@@ -212,9 +212,9 @@ public class ControlFragment extends BaseFragment {
         	startActivity(intent);
 		}else if(v == btnCollectStatus){
 			printLog(R.string.getting_device_status);
-			getPillowHelper().getCollectionStatus(1000, new IDataCallback<Byte>() {
+			getPillowHelper().getCollectionStatus(1000, new IResultCallback<Byte>() {
 				@Override
-				public void onDataCallback(final CallbackData<Byte> cd) {
+				public void onResultCallback(final CallbackData<Byte> cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
@@ -258,9 +258,9 @@ public class ControlFragment extends BaseFragment {
 			
 		}else if(v == btnStartCollect){
 			printLog(R.string.informing_device_collecting);
-			getPillowHelper().startCollection(1000, new IDataCallback<Void>() {
+			getPillowHelper().startCollection(1000, new IResultCallback<Void>() {
 				@Override
-				public void onDataCallback(final CallbackData<Void> cd) {
+				public void onResultCallback(final CallbackData<Void> cd) {
 					// TODO Auto-generated method stub
 					mActivity.runOnUiThread(new Runnable() {
 						@Override
@@ -285,9 +285,9 @@ public class ControlFragment extends BaseFragment {
 	}
 	
 
-	 private IDataCallback<RealTimeData> realtimeCB = new IDataCallback<RealTimeData>() {
+	 private IResultCallback<RealTimeData> realtimeCB = new IResultCallback<RealTimeData>() {
 			@Override
-			public void onDataCallback(final CallbackData<RealTimeData> cd) {
+			public void onResultCallback(final CallbackData<RealTimeData> cd) {
 				// TODO Auto-generated method stub
 //				LogUtil.log(TAG+" realtimeCB cd:" + cd +",isAdd:" + isAdded());
 				if(!isAdded()){
@@ -299,7 +299,7 @@ public class ControlFragment extends BaseFragment {
 					public void run() {
 						// TODO Auto-generated method stub
 						if(checkStatus(cd)){
-							if(cd.getType() == IMonitorManager.TYPE_START_REALTIME_DATA){
+							if(cd.getCallbackType() == IMonitorManager.METHOD_REALTIME_DATA_OPEN){
 								printLog(R.string.get_success);
 								btnStartRealtimeData.setEnabled(false);
 								btnStopRealtimeData.setEnabled(true);
@@ -315,7 +315,7 @@ public class ControlFragment extends BaseFragment {
 									tvSleepStatus.setText(null);
 									printLog(getString(R.string.get_sleep, getString(R.string.sleep_) +":" + realTimeData.getSleepFlag()+","+getString(R.string.wake_)+":"+realTimeData.getWakeFlag()));
 								}
-							}*/else if(cd.getType() == IMonitorManager.TYPE_REALTIME_DATA){//实时数据
+							}*/else if(cd.getCallbackType() == IMonitorManager.METHOD_REALTIME_DATA){//实时数据
 								btnStartCollect.setEnabled(false);
 								btnStopCollect.setEnabled(true);
 								btnStartRealtimeData.setEnabled(false);

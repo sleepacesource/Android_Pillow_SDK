@@ -1,6 +1,7 @@
 package com.pillowsdk.demo;
 
-import com.sleepace.sdk.util.LogUtil;
+
+import com.sleepace.sdk.util.SdkLog;
 
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -50,7 +51,7 @@ public class SplashActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.initUI();
 		int len = DemoApp.getInstance().logBuf.length();
-		LogUtil.log(TAG+" initUI log len:" + len);
+		SdkLog.log(TAG+" initUI log len:" + len);
 		if(len > 0){//清除log缓存
 			DemoApp.getInstance().logBuf.delete(0, len);
 		}

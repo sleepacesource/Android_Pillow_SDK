@@ -3,6 +3,7 @@ package com.pillowsdk.demo.fragment;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -29,14 +30,13 @@ import com.sleepace.sdk.interfs.IResultCallback;
 import com.sleepace.sdk.manager.CONNECTION_STATE;
 import com.sleepace.sdk.manager.CallbackData;
 import com.sleepace.sdk.manager.DeviceType;
-import com.sleepace.sdk.util.LogUtil;
+import com.sleepace.sdk.util.SdkLog;
 import com.sleepace.sdk.util.TimeUtil;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +59,7 @@ public class DataFragment extends BaseFragment {
 		super.onCreateView(inflater, container, savedInstanceState);
 		this.inflater = inflater;
 		View view = inflater.inflate(R.layout.fragment_data, null);
-		// LogUtil.log(TAG + " onCreateView-----------");
+		// SdkLog.log(TAG + " onCreateView-----------");
 		findView(view);
 		initListener();
 		initUI();
@@ -154,13 +154,16 @@ public class DataFragment extends BaseFragment {
 							progressDialog.dismiss();
 							if (checkStatus(cd)) {
 								List<HistoryData> list = cd.getResult();
-								LogUtil.log(TAG + " historyDownload size:" + list.size());
+								SdkLog.log(TAG + " historyDownload size:" + list.size());
 								if (list.size() > 0) {
 									Collections.sort(list, new HistoryDataComparator());
 									HistoryData historyData = list.get(0);
-									LogUtil.log(TAG + " historyDownload first data duration:" + historyData.getSummary().getRecordCount() + ",algorithmVer:"
-											+ historyData.getAnaly().getAlgorithmVer());
-									if (historyData.getAnaly().getReportFlag() == 1) {// 长报告
+									Detail detail = historyData.getDetail();
+									SdkLog.log(TAG + " historyDownload status:" + Arrays.toString(detail.getStatus()));
+									SdkLog.log(TAG + " historyDownload statusVal:" + Arrays.toString(detail.getStatusValue()));
+									SdkLog.log(TAG + " historyDownload first data duration:" + historyData.getSummary().getRecordCount() + ",algorithmVer:"
+											+ historyData.getAnalysis().getAlgorithmVer());
+									if (historyData.getAnalysis().getReportFlag() == 1) {// 长报告
 										initLongReportView(historyData);
 									} else {
 										initShortReportView(historyData);
@@ -169,7 +172,7 @@ public class DataFragment extends BaseFragment {
 									printLog(R.string.no_data);
 								}
 							} else {
-								LogUtil.log(TAG + " historyDownload fail cd:" + cd);
+								SdkLog.log(TAG + " historyDownload fail cd:" + cd);
 							}
 						}
 					});
@@ -193,7 +196,7 @@ public class DataFragment extends BaseFragment {
 	private void initShortReportView(HistoryData historyData) {
 		reportLayout.removeAllViews();
 		String ver = null;
-		Analysis analysis = historyData.getAnaly();
+		Analysis analysis = historyData.getAnalysis();
 		if(analysis != null){
 			ver = analysis.getAlgorithmVer();
 		}
@@ -216,8 +219,8 @@ public class DataFragment extends BaseFragment {
 			int hour = duration / 60;
 			int minute = duration % 60;
 			tvSleepDuration.setText(hour + getString(R.string.unit_h) + minute + getString(R.string.unit_m));
-			tvAvgHeartRate.setText(analysis.getAverageHeartBeatRate() + getString(R.string.unit_heart));
-			tvAvgBreathRate.setText(analysis.getAverageBreathRate() + getString(R.string.unit_respiration));
+			tvAvgHeartRate.setText(analysis.getAvgHeartRate() + getString(R.string.unit_heart));
+			tvAvgBreathRate.setText(analysis.getAvgBreathRate() + getString(R.string.unit_respiration));
 		}
 		reportLayout.addView(view);
 	}
@@ -225,7 +228,7 @@ public class DataFragment extends BaseFragment {
 	private void initLongReportView(HistoryData historyData) {
 		reportLayout.removeAllViews();
 		String ver = null;
-		Analysis analysis = historyData.getAnaly();
+		Analysis analysis = historyData.getAnalysis();
 		if(analysis != null){
 			ver = analysis.getAlgorithmVer();
 		}
@@ -234,7 +237,7 @@ public class DataFragment extends BaseFragment {
 		
 		View view = inflater.inflate(R.layout.layout_long_report, null);
 		LinearLayout mainGraph = (LinearLayout) view.findViewById(R.id.layout_chart);
-		GraphView.GraphViewData[] mainData = getSleepGraphData(historyData.getDetail(), historyData.getAnaly(), 60,
+		GraphView.GraphViewData[] mainData = getSleepGraphData(historyData.getDetail(), historyData.getAnalysis(), 60,
 				DeviceType.DEVICE_TYPE_PILLOW);
 
 		int think = (int) (DensityUtil.dip2px(mActivity, 1) * 0.8);
@@ -325,8 +328,8 @@ public class DataFragment extends BaseFragment {
 			int hour = duration / 60;
 			int minute = duration % 60;
 			tvSleepDuration.setText(hour + getString(R.string.unit_h) + minute + getString(R.string.unit_m));
-			tvAvgHeartRate.setText(analysis.getAverageHeartBeatRate() + getString(R.string.unit_heart));
-			tvAvgBreathRate.setText(analysis.getAverageBreathRate() + getString(R.string.unit_respiration));
+			tvAvgHeartRate.setText(analysis.getAvgHeartRate() + getString(R.string.unit_heart));
+			tvAvgBreathRate.setText(analysis.getAvgBreathRate() + getString(R.string.unit_respiration));
 
 			List<DeductItems> list = new ArrayList<DataFragment.DeductItems>();
 
@@ -536,7 +539,7 @@ public class DataFragment extends BaseFragment {
 
 		Analysis analysis = AnalysisUtil.analysData(summ, detail, 1, DeviceType.DEVICE_TYPE_PILLOW);
 		analysis.setAlgorithmVer(null);
-		historyData.setAnaly(analysis);
+		historyData.setAnalysis(analysis);
 		return historyData;
 	}
 
@@ -634,7 +637,7 @@ public class DataFragment extends BaseFragment {
 
 		// Analysis analysis = AnalysisUtil.analysData(summ, detail, 0,
 		// DeviceType.DEVICE_TYPE_PILLOW);
-		// LogUtil.log(TAG+" createLongReportData algorithmVer:" +
+		// SdkLog.log(TAG+" createLongReportData algorithmVer:" +
 		// analysis.getAlgorithmVer());
 		Analysis analysis = new Analysis();
 		analysis.setMd_breath_low_decrease_scale((short) 1);
@@ -656,18 +659,18 @@ public class DataFragment extends BaseFragment {
 		analysis.setInSleepPerc(39);
 		analysis.setLightSleepPerc(27);
 		analysis.setWakeSleepPerc(24);
-		analysis.setWakeAllTime(62);
+		analysis.setWake(62);
 		analysis.setWakeTimes(6);
 		analysis.setBreathPauseTimes(1);
 		analysis.setBreathPauseAllTime(12);
 		analysis.setHeartBeatPauseTimes(0);
 		analysis.setHeartBeatPauseAllTime(0);
 		analysis.setLeaveBedTimes(1);
-		analysis.setLeaveBedAllTime(417);
+		analysis.setOutOfBedDuration(417);
 		analysis.setBodyMovementTimes(65);
 		analysis.setTrunOverTimes(105);
-		analysis.setAverageHeartBeatRate(64);
-		analysis.setAverageBreathRate(17);
+		analysis.setAvgHeartRate(64);
+		analysis.setAvgBreathRate(17);
 		analysis.setMaxHeartBeatRate(75);
 		analysis.setMaxBreathRate(22);
 		analysis.setMinHeartBeatRate(54);
@@ -779,7 +782,7 @@ public class DataFragment extends BaseFragment {
 		analysis.setLeftBedStatusAry(leftBedStatusAry);
 		analysis.setTurnOverStatusAry(turnOverStatusAry);
 
-		historyData.setAnaly(analysis);
+		historyData.setAnalysis(analysis);
 		return historyData;
 	}
 

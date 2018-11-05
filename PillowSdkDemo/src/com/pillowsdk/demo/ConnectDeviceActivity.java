@@ -37,7 +37,8 @@ public class ConnectDeviceActivity extends BaseActivity {
     		DeviceCode.PILLOW_3_3, //享睡健康枕-化纤压电二片式
     		DeviceCode.PILLOW_3_4, //享睡健康枕-化纤压电香薰
     		DeviceCode.PILLOW_3_5, //享睡健康枕-可拆卸填充物聚酯纤维
-    		DeviceCode.PILLOW_3_6 //享睡健康枕-可拆卸填充物记忆棉条
+    		DeviceCode.PILLOW_3_6, //享睡健康枕-可拆卸填充物记忆棉条
+    		DeviceCode.PILLOW_34_3 //享睡健康枕-带温湿度
     };
     
 

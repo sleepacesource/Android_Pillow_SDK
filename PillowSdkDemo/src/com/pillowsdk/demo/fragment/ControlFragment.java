@@ -26,7 +26,7 @@ import android.widget.TextView;
 public class ControlFragment extends BaseFragment {
 	
 	private Button btnCollectStatus, btnAutoStart, btnStartCollect, btnStopCollect, btnStartRealtimeData, btnStopRealtimeData, btnSignal;
-	private TextView tvCollectStatus, tvSleepStatus, tvHeartRate, tvBreathRate;
+	private TextView tvCollectStatus, tvSleepStatus, tvHeartRate, tvBreathRate, tvTemp, tvHum;
 	
 
 	@Override
@@ -56,6 +56,8 @@ public class ControlFragment extends BaseFragment {
 		tvSleepStatus = (TextView) root.findViewById(R.id.tv_sleep_status);
 		tvHeartRate = (TextView) root.findViewById(R.id.tv_heartrate);
 		tvBreathRate = (TextView) root.findViewById(R.id.tv_breathrate);
+		tvTemp = (TextView) root.findViewById(R.id.tv_temp);
+		tvHum = (TextView) root.findViewById(R.id.tv_hum);
 	}
 
 
@@ -140,6 +142,8 @@ public class ControlFragment extends BaseFragment {
 						tvSleepStatus.setText(null);
 						tvHeartRate.setText(null);
 						tvBreathRate.setText(null);
+						tvTemp.setText(null);
+						tvHum.setText(null);
 						printLog(R.string.connection_broken);
 					}else if(state == CONNECTION_STATE.CONNECTED){
 						
@@ -174,6 +178,8 @@ public class ControlFragment extends BaseFragment {
 								btnStopRealtimeData.setEnabled(false);
 								tvHeartRate.setText("--");
 								tvBreathRate.setText("--");
+								tvTemp.setText("--");
+								tvHum.setText("--");
 							}
 						}
 					});
@@ -202,6 +208,8 @@ public class ControlFragment extends BaseFragment {
 								tvSleepStatus.setText(null);
 								tvHeartRate.setText("--");
 								tvBreathRate.setText("--");
+								tvTemp.setText("--");
+								tvHum.setText("--");
 							}
 						}
 					});
@@ -330,12 +338,21 @@ public class ControlFragment extends BaseFragment {
 								}else{
 									tvSleepStatus.setText(null);
 								}
-								if(sleepStatus == SleepStatusType.SLEEP_LEAVE){//离床
+								
+								if(sleepStatus == SleepStatusType.SLEEP_INIT || sleepStatus == SleepStatusType.SLEEP_LEAVE){//离床
 									tvHeartRate.setText("--");
 									tvBreathRate.setText("--");
 								}else{
 									tvHeartRate.setText(realTimeData.getHeartRate() + getString(R.string.unit_heart));
 									tvBreathRate.setText(realTimeData.getBreathRate() + getString(R.string.unit_respiration));
+								}
+								
+								if(sleepStatus == SleepStatusType.SLEEP_INIT) {
+									tvTemp.setText("--");
+									tvHum.setText("--");
+								}else {
+									tvTemp.setText(realTimeData.getTemp()/100 + "℃");
+									tvHum.setText(realTimeData.getHumidity()+"%");
 								}
 								
 								printLog(getString(R.string.get_heart_rate, String.valueOf(realTimeData.getHeartRate())));

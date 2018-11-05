@@ -635,10 +635,10 @@ public class DataFragment extends BaseFragment {
 		detail.setStatusValue(statusValue);
 		historyData.setDetail(detail);
 
-		// Analysis analysis = AnalysisUtil.analysData(summ, detail, 0,
-		// DeviceType.DEVICE_TYPE_PILLOW);
-		// SdkLog.log(TAG+" createLongReportData algorithmVer:" +
-		// analysis.getAlgorithmVer());
+//		 Analysis analysis = AnalysisUtil.analysData(summ, detail, 0,
+//		 DeviceType.DEVICE_TYPE_P3);
+//		 SdkLog.log(TAG+" createLongReportData algorithmVer:" + analysis.getAlgorithmVer());
+		 
 		Analysis analysis = new Analysis();
 		analysis.setMd_breath_low_decrease_scale((short) 1);
 		analysis.setMd_body_move_decrease_scale((short) 4);

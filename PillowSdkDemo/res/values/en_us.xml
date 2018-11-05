@@ -212,4 +212,7 @@
   <string name="get_working_status">Get device working status: %1$s</string>
   <string name="remark_1">To ensure the accuracy of sleep analysis, set the length to 3 to 16 hours. And ensure that the connected device is saved.</string>
   <string name="getting_real_time_data">Getting real-time data</string>
+  <string name="temp">Temperature</string>
+  <string name="hum">Humidity</string>
+  <string name="get_envir_data">Get Environment Data</string>
 </resources>

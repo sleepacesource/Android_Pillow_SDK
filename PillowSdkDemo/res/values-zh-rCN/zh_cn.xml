@@ -209,6 +209,9 @@
   <string name="get_working_status">获取设备工作状态：%1$s</string>
   <string name="remark_1">为确保睡眠分析准确度，请将时间长度设置在3~16个小时内。且确保连接设备成功后保存。</string>
   <string name="getting_real_time_data">正在获取实时数据...</string>
+  <string name="temp">温度</string>
+  <string name="hum">湿度</string>
+  <string name="get_envir_data">获取环境参数</string>
 </resources>
 
 

@@ -6,6 +6,7 @@ import java.io.InputStream;
 import com.pillowsdk.demo.MainActivity;
 import com.pillowsdk.demo.R;
 import com.sleepace.sdk.core.heartbreath.domain.BatteryBean;
+import com.sleepace.sdk.core.heartbreath.domain.EnvironmentData;
 import com.sleepace.sdk.interfs.IConnectionStateCallback;
 import com.sleepace.sdk.interfs.IDeviceManager;
 import com.sleepace.sdk.interfs.IResultCallback;
@@ -13,9 +14,11 @@ import com.sleepace.sdk.manager.CONNECTION_STATE;
 import com.sleepace.sdk.manager.CallbackData;
 import com.sleepace.sdk.manager.DeviceMaterial;
 import com.sleepace.sdk.manager.DeviceType;
+import com.sleepace.sdk.util.SdkLog;
 
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +26,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class DeviceFragment extends BaseFragment {
-	private Button btnDeviceName, btnDeviceId, btnPower, btnVersion, btnUpgrade;
-	private TextView tvDeviceName, tvDeviceId, tvPower, tvVersion, tvUpgrade;
+	private Button btnDeviceName, btnDeviceId, btnPower, btnEnvirData, btnVersion, btnUpgrade;
+	private TextView tvDeviceName, tvDeviceId, tvPower, tvEnvirData, tvVersion, tvUpgrade;
 	private TextView tvDisconnect;
 	private boolean upgrading = false;
 
@@ -50,6 +53,8 @@ public class DeviceFragment extends BaseFragment {
 		btnDeviceName = (Button) root.findViewById(R.id.btn_get_device_name);
 		btnDeviceId = (Button) root.findViewById(R.id.btn_get_device_id);
 		btnPower = (Button) root.findViewById(R.id.btn_get_device_battery);
+		btnEnvirData = (Button) root.findViewById(R.id.btn_get_envir_data);
+		tvEnvirData = (TextView) root.findViewById(R.id.tv_envir_data);
 		btnVersion = (Button) root.findViewById(R.id.btn_device_version);
 		btnUpgrade = (Button) root.findViewById(R.id.btn_upgrade_fireware);
 		tvDisconnect = (TextView) root.findViewById(R.id.tv_disconnect);
@@ -63,6 +68,7 @@ public class DeviceFragment extends BaseFragment {
 		btnDeviceName.setOnClickListener(this);
 		btnDeviceId.setOnClickListener(this);
 		btnPower.setOnClickListener(this);
+		btnEnvirData.setOnClickListener(this);
 		btnVersion.setOnClickListener(this);
 		btnUpgrade.setOnClickListener(this);
 		tvDisconnect.setOnClickListener(this);
@@ -77,6 +83,9 @@ public class DeviceFragment extends BaseFragment {
 		tvDeviceName.setText(MainActivity.deviceName);
 		tvDeviceId.setText(MainActivity.deviceId);
 		tvPower.setText(MainActivity.power);
+		if(!TextUtils.isEmpty(MainActivity.temp)) {
+			tvEnvirData.setText(getString(R.string.temp)+":" + MainActivity.temp + "  " + getString(R.string.hum) +":" + MainActivity.hum);
+		}
 		tvVersion.setText(MainActivity.version);
 		printLog(null);
 	}
@@ -207,6 +216,26 @@ public class DeviceFragment extends BaseFragment {
 								MainActivity.power = bean.getQuantity() + "%";
 								tvPower.setText(MainActivity.power);
 								printLog(getString(R.string.get_power, MainActivity.power));
+							}
+						}
+					});
+				}
+			});
+		}else if(v == btnEnvirData){
+			getPillowHelper().getEnvironmentalData(1000, new IResultCallback<EnvironmentData>() {
+				@Override
+				public void onResultCallback(final CallbackData<EnvironmentData> cd) {
+					// TODO Auto-generated method stub
+					mActivity.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							SdkLog.log(TAG+" getEnvironmentalData cd:" + cd);
+							if(checkStatus(cd)){
+								EnvironmentData bean =  cd.getResult();
+								MainActivity.temp = bean.getTemperature()/100 + "℃";
+								MainActivity.hum = bean.getHumidity() + "%";
+								tvEnvirData.setText(getString(R.string.temp)+":" + MainActivity.temp + "  " + getString(R.string.hum) +":" + MainActivity.hum);
 							}
 						}
 					});

@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
 	private ProgressDialog upgradeDialog;
 	
 	//缓存数据
-	public static String deviceName, deviceId, power, version;
+	public static String deviceName, deviceId, power, version, temp, hum;
 	public static byte collectStatus = -100;
 
 	@Override

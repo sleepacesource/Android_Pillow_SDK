@@ -127,6 +127,33 @@
                 android:textColor="@color/COLOR_3"
                 android:textSize="@dimen/Title_3" />
         </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/btn_height"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/btn_get_envir_data"
+                style="@style/common_bt"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:text="@string/get_envir_data" />
+
+            <TextView
+                android:id="@+id/tv_envir_data"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/execute_progress_win_bg"
+                android:gravity="center"
+                android:textColor="@color/COLOR_3"
+                android:textSize="@dimen/Title_3" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

@@ -129,10 +129,13 @@
         </LinearLayout>
         
         <LinearLayout
+            android:id="@+id/layout_envir_data"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_height"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:visibility="gone"
+            >
 
             <Button
                 android:id="@+id/btn_get_envir_data"

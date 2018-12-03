@@ -13,6 +13,7 @@ import com.sleepace.sdk.interfs.IMonitorManager;
 import com.sleepace.sdk.interfs.IResultCallback;
 import com.sleepace.sdk.manager.CONNECTION_STATE;
 import com.sleepace.sdk.manager.CallbackData;
+import com.sleepace.sdk.manager.DeviceType;
 import com.sleepace.sdk.util.SdkLog;
 
 import android.content.Intent;
@@ -27,6 +28,7 @@ public class ControlFragment extends BaseFragment {
 	
 	private Button btnCollectStatus, btnAutoStart, btnStartCollect, btnStopCollect, btnStartRealtimeData, btnStopRealtimeData, btnSignal;
 	private TextView tvCollectStatus, tvSleepStatus, tvHeartRate, tvBreathRate, tvTemp, tvHum;
+	private View envirView;
 	
 
 	@Override
@@ -56,6 +58,7 @@ public class ControlFragment extends BaseFragment {
 		tvSleepStatus = (TextView) root.findViewById(R.id.tv_sleep_status);
 		tvHeartRate = (TextView) root.findViewById(R.id.tv_heartrate);
 		tvBreathRate = (TextView) root.findViewById(R.id.tv_breathrate);
+		envirView = root.findViewById(R.id.layout_envir_data);
 		tvTemp = (TextView) root.findViewById(R.id.tv_temp);
 		tvHum = (TextView) root.findViewById(R.id.tv_hum);
 	}
@@ -85,6 +88,16 @@ public class ControlFragment extends BaseFragment {
 		btnStartRealtimeData.setEnabled(false);
 		btnStopRealtimeData.setEnabled(false);
 		btnSignal.setEnabled(false);
+		
+		if(mActivity.getDevice() != null) {
+			if(DeviceType.isP3(mActivity.getDevice().getDeviceType())) {
+				envirView.setVisibility(View.VISIBLE);
+			}else {
+				envirView.setVisibility(View.GONE);
+			}
+		}else {
+			envirView.setVisibility(View.GONE);
+		}
 	}
 	
 	

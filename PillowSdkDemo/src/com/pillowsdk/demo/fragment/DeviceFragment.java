@@ -26,9 +26,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class DeviceFragment extends BaseFragment {
-	private Button btnDeviceName, btnDeviceId, btnPower, btnEnvirData, btnVersion, btnUpgrade;
-	private TextView tvDeviceName, tvDeviceId, tvPower, tvEnvirData, tvVersion, tvUpgrade;
+	private Button btnDeviceName, btnDeviceId, btnPower, /*btnEnvirData,*/ btnVersion, btnUpgrade;
+	private TextView tvDeviceName, tvDeviceId, tvPower, /*tvEnvirData,*/ tvVersion, tvUpgrade;
 	private TextView tvDisconnect;
+//	private View envirView;
 	private boolean upgrading = false;
 
 	@Override
@@ -53,8 +54,9 @@ public class DeviceFragment extends BaseFragment {
 		btnDeviceName = (Button) root.findViewById(R.id.btn_get_device_name);
 		btnDeviceId = (Button) root.findViewById(R.id.btn_get_device_id);
 		btnPower = (Button) root.findViewById(R.id.btn_get_device_battery);
-		btnEnvirData = (Button) root.findViewById(R.id.btn_get_envir_data);
-		tvEnvirData = (TextView) root.findViewById(R.id.tv_envir_data);
+//		btnEnvirData = (Button) root.findViewById(R.id.btn_get_envir_data);
+//		envirView = root.findViewById(R.id.layout_envir_data);
+//		tvEnvirData = (TextView) root.findViewById(R.id.tv_envir_data);
 		btnVersion = (Button) root.findViewById(R.id.btn_device_version);
 		btnUpgrade = (Button) root.findViewById(R.id.btn_upgrade_fireware);
 		tvDisconnect = (TextView) root.findViewById(R.id.tv_disconnect);
@@ -68,7 +70,7 @@ public class DeviceFragment extends BaseFragment {
 		btnDeviceName.setOnClickListener(this);
 		btnDeviceId.setOnClickListener(this);
 		btnPower.setOnClickListener(this);
-		btnEnvirData.setOnClickListener(this);
+//		btnEnvirData.setOnClickListener(this);
 		btnVersion.setOnClickListener(this);
 		btnUpgrade.setOnClickListener(this);
 		tvDisconnect.setOnClickListener(this);
@@ -83,18 +85,27 @@ public class DeviceFragment extends BaseFragment {
 		tvDeviceName.setText(MainActivity.deviceName);
 		tvDeviceId.setText(MainActivity.deviceId);
 		tvPower.setText(MainActivity.power);
-		if(!TextUtils.isEmpty(MainActivity.temp)) {
-			tvEnvirData.setText(getString(R.string.temp)+":" + MainActivity.temp + "  " + getString(R.string.hum) +":" + MainActivity.hum);
-		}
+//		if(mActivity.getDevice() != null) {
+//			if(DeviceType.isP3(mActivity.getDevice().getDeviceType())) {
+//				envirView.setVisibility(View.VISIBLE);
+//				if(!TextUtils.isEmpty(MainActivity.temp)) {
+//					tvEnvirData.setText(getString(R.string.temp)+":" + MainActivity.temp + "  " + getString(R.string.hum) +":" + MainActivity.hum);
+//				}
+//			}else {
+//				envirView.setVisibility(View.GONE);
+//			}
+//		}else {
+//			envirView.setVisibility(View.GONE);
+//		}
 		tvVersion.setText(MainActivity.version);
 		printLog(null);
 	}
-	
 	
 	private void setPageEnable(boolean enable){
 		btnDeviceName.setEnabled(enable);
 		btnDeviceId.setEnabled(enable);
 		btnPower.setEnabled(enable);
+//		btnEnvirData.setEnabled(enable);
 		btnVersion.setEnabled(enable);
 		btnUpgrade.setEnabled(enable);
 		tvDisconnect.setEnabled(enable);
@@ -221,7 +232,8 @@ public class DeviceFragment extends BaseFragment {
 					});
 				}
 			});
-		}else if(v == btnEnvirData){
+		}/*else if(v == btnEnvirData){
+			printLog(R.string.getting_envir_data);
 			getPillowHelper().getEnvironmentalData(1000, new IResultCallback<EnvironmentData>() {
 				@Override
 				public void onResultCallback(final CallbackData<EnvironmentData> cd) {
@@ -236,12 +248,13 @@ public class DeviceFragment extends BaseFragment {
 								MainActivity.temp = bean.getTemperature()/100 + "℃";
 								MainActivity.hum = bean.getHumidity() + "%";
 								tvEnvirData.setText(getString(R.string.temp)+":" + MainActivity.temp + "  " + getString(R.string.hum) +":" + MainActivity.hum);
+								printLog(getString(R.string.get_envir_data)+ ":" + tvEnvirData.getText().toString());
 							}
 						}
 					});
 				}
 			});
-		}else if(v == btnVersion){
+		}*/else if(v == btnVersion){
 			printLog(R.string.getting_current_version);
 			getPillowHelper().getDeviceVersion(1000, new IResultCallback<String>() {
 				@Override
@@ -330,6 +343,11 @@ public class DeviceFragment extends BaseFragment {
 					crcBin = 709647589l;
 					crcDes = 542788408l;
 				}
+				break;
+			case DEVICE_TYPE_P3:
+				is = getResources().getAssets().open("34-3_1.15.des");
+				crcBin = 1630395148l;
+				crcDes = 4206117993l;
 				break;
 			default:
 				break;

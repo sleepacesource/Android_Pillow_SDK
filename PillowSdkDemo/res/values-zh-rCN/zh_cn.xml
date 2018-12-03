@@ -41,7 +41,7 @@
   <string name="obtain_sleep_state">获取状态</string>
   <string name="wake">清醒</string>
   <string name="sleep">入睡</string>
-  <string name="out_bed">离床</string>
+  <string name="out_bed">离枕</string>
   <string name="sleep_analysis">睡眠分析</string>
   <string name="imitate_data">模拟数据</string>
   <string name="start_collection">开始采集</string>
@@ -76,7 +76,7 @@
   <string name="heart_pause">心跳暂停</string>
   <string name="respiration_pause">呼吸暂停</string>
   <string name="wake_times">清醒次数</string>
-  <string name="out_times">离床次数</string>
+  <string name="out_times">离枕次数</string>
   <string name="out_times_total">共%1$s次</string>
   <string name="turn_times">翻身次数</string>
   <string name="unit_s">秒</string>
@@ -212,6 +212,8 @@
   <string name="temp">温度</string>
   <string name="hum">湿度</string>
   <string name="get_envir_data">获取环境参数</string>
+  <string name="getting_envir_data">正在获取环境参数...</string>
+  
 </resources>
 
 

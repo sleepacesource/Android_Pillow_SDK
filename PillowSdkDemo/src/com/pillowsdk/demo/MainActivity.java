@@ -130,6 +130,8 @@ public class MainActivity extends BaseActivity {
 		deviceId = null;
 		power = null;
 		version = null;
+		temp = null;
+		hum = null;
 	}
 	
 	private IConnectionStateCallback stateCallback = new IConnectionStateCallback() {
